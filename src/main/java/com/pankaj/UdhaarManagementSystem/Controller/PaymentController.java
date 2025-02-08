@@ -1,6 +1,7 @@
 package com.pankaj.UdhaarManagementSystem.Controller;
 
 
+import com.pankaj.UdhaarManagementSystem.DTO.PaymentDTO;
 import com.pankaj.UdhaarManagementSystem.Entity.Payments;
 import com.pankaj.UdhaarManagementSystem.Service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +22,17 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping
-    public Payments addPayment(@RequestBody Payments payments){
-        return  paymentService.addPayment(payments);
+    public PaymentDTO addPayment(@RequestBody PaymentDTO paymentsDTO){
+        return  paymentService.addPayment(paymentsDTO);
 
     }
     @GetMapping
-    public List<Payments>getallpayments(){
+    public List<PaymentDTO>getallpayments(){
         return  paymentService.getAllPayments();
     }
 
     @GetMapping("/{id}")
-    public Optional<Payments> getmappingbyid(@PathVariable Long id){
+    public Optional<PaymentDTO> getmappingbyid(@PathVariable Long id){
         return paymentService.getPaymentById(id);
     }
 

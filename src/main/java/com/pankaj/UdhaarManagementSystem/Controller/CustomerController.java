@@ -1,6 +1,7 @@
 package com.pankaj.UdhaarManagementSystem.Controller;
 
 
+import com.pankaj.UdhaarManagementSystem.DTO.CustomerDTO;
 import com.pankaj.UdhaarManagementSystem.Entity.Customer;
 import com.pankaj.UdhaarManagementSystem.Service.CustomerService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -18,19 +19,19 @@ public class CustomerController {
     private CustomerService customerService;
 
 @PostMapping
-public Customer AddCustomer(@RequestBody Customer customer){
-      return customerService.AddCustomer(customer);
+public CustomerDTO AddCustomer(@RequestBody CustomerDTO customerDTO){
+      return customerService.AddCustomer(customerDTO);
 }
 
 
 
 @GetMapping
-    public List<Customer> getCustomer(){
+    public List<CustomerDTO> getCustomer(){
     return  customerService.findallCustomer();
 }
 
 @GetMapping("/{id}")
-public Optional<Customer> getCustomerbyid(@PathVariable Long id){
+public Optional<CustomerDTO> getCustomerbyid(@PathVariable Long id){
     return customerService.GetCustomerById(id);
 }
 
