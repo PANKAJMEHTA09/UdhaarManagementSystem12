@@ -5,6 +5,7 @@ import com.pankaj.UdhaarManagementSystem.DTO.CustomerDTO;
 import com.pankaj.UdhaarManagementSystem.Entity.Customer;
 import com.pankaj.UdhaarManagementSystem.Service.CustomerService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class CustomerController {
     private CustomerService customerService;
 
 @PostMapping
-public CustomerDTO AddCustomer(@RequestBody CustomerDTO customerDTO){
+public CustomerDTO AddCustomer(@Valid @RequestBody CustomerDTO customerDTO){
       return customerService.AddCustomer(customerDTO);
 }
 

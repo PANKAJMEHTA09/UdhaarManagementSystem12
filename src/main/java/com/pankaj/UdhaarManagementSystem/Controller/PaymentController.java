@@ -4,6 +4,7 @@ package com.pankaj.UdhaarManagementSystem.Controller;
 import com.pankaj.UdhaarManagementSystem.DTO.PaymentDTO;
 import com.pankaj.UdhaarManagementSystem.Entity.Payments;
 import com.pankaj.UdhaarManagementSystem.Service.PaymentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping
-    public PaymentDTO addPayment(@RequestBody PaymentDTO paymentsDTO){
+    public PaymentDTO addPayment( @Valid @RequestBody PaymentDTO paymentsDTO){
         return  paymentService.addPayment(paymentsDTO);
 
     }

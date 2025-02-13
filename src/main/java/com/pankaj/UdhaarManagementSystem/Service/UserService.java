@@ -2,6 +2,7 @@ package com.pankaj.UdhaarManagementSystem.Service;
 
 import com.pankaj.UdhaarManagementSystem.DTO.UserDTO;
 import com.pankaj.UdhaarManagementSystem.Entity.User;
+import com.pankaj.UdhaarManagementSystem.Exception.ResourceNotFoundException;
 import com.pankaj.UdhaarManagementSystem.Repo.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,13 @@ public class UserService {
     }
 
     public void DeleteUser(long id){
+
+        if (!userRepo.existsById(id)) {
+            throw new ResourceNotFoundException.ResourceNotFoundException("User with ID " + id + " not found");
+        }
+
+
+
         userRepo.deleteById(id);
     }
 

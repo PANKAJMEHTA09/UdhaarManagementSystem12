@@ -4,6 +4,7 @@ package com.pankaj.UdhaarManagementSystem.Controller;
 import com.pankaj.UdhaarManagementSystem.DTO.UserDTO;
 import com.pankaj.UdhaarManagementSystem.Entity.User;
 import com.pankaj.UdhaarManagementSystem.Service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDTO addUser(@RequestBody UserDTO userDTO){
+    public UserDTO addUser(@Valid @RequestBody UserDTO userDTO){
 
         return userService.Adduser(userDTO);
 
