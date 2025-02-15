@@ -3,6 +3,7 @@ package com.pankaj.UdhaarManagementSystem.Service;
 import com.pankaj.UdhaarManagementSystem.DTO.PaymentDTO;
 import com.pankaj.UdhaarManagementSystem.Entity.Customer;
 import com.pankaj.UdhaarManagementSystem.Entity.Payments;
+import com.pankaj.UdhaarManagementSystem.Exception.ResourceNotFoundException;
 import com.pankaj.UdhaarManagementSystem.Repo.CustomerRepo;
 import com.pankaj.UdhaarManagementSystem.Repo.PaymentRepo;
 import org.modelmapper.ModelMapper;
@@ -64,6 +65,10 @@ public class PaymentService {
         }
 
         public void deletePayment(Long id) {
+
+//            Customer customer=customerRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("user not found with this id "));
+
+
             paymentRepo.deleteById(id);
         }
     }

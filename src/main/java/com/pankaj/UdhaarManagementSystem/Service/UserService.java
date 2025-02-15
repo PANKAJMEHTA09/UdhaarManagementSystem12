@@ -2,6 +2,7 @@ package com.pankaj.UdhaarManagementSystem.Service;
 
 import com.pankaj.UdhaarManagementSystem.DTO.UserDTO;
 import com.pankaj.UdhaarManagementSystem.Entity.User;
+import com.pankaj.UdhaarManagementSystem.Exception.ResourceAlreadyExistsException;
 import com.pankaj.UdhaarManagementSystem.Exception.ResourceNotFoundException;
 import com.pankaj.UdhaarManagementSystem.Repo.UserRepo;
 import org.modelmapper.ModelMapper;
@@ -18,24 +19,27 @@ public class UserService {
 
     @Autowired
     private UserRepo userRepo;
-      @Autowired
+    @Autowired
      private ModelMapper modelMapper;
 
 
+
+
     public UserDTO Adduser(UserDTO userDTO){
+
+        if(!userRepo.findByname(userDTO.getName()).isEmpty()){
+            throw new ResourceAlreadyExistsException("user with this name already exist");
+        }
    User user = modelMapper.map(userDTO, User.class);
+
     User savedUser = userRepo.save(user);
+
     return modelMapper.map(savedUser, UserDTO.class);
 
     }
 
     public void DeleteUser(long id){
-
-        if (!userRepo.existsById(id)) {
-            throw new ResourceNotFoundException.ResourceNotFoundException("User with ID " + id + " not found");
-        }
-
-
+        User user = userRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("user not found with this id "+ id));
 
         userRepo.deleteById(id);
     }
@@ -52,14 +56,11 @@ public class UserService {
 
     }
 
-    public Optional<UserDTO> getUserById(Long id) {
-        Optional<User> userOptional = userRepo.findById(id);
+    public UserDTO getUserById(Long id) {
+        User user = userRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("user not found with this id "+ id));
+        UserDTO userDTO =modelMapper.map(user,UserDTO.class);
+        return userDTO;
 
-        if (userOptional.isPresent()) {
-            return Optional.ofNullable(modelMapper.map(userOptional.get(), UserDTO.class));
-        } else {
-            return null; 
-        }
     }
 
 

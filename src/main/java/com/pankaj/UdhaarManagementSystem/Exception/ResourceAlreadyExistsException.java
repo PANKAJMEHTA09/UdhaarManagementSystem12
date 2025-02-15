@@ -3,7 +3,7 @@ package com.pankaj.UdhaarManagementSystem.Exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-public class ResourceAlreadyExistsException {
+
 
     @ResponseStatus(value = HttpStatus.CONFLICT)
     public class ResourceAlreadyExistsException extends RuntimeException {
@@ -12,4 +12,3 @@ public class ResourceAlreadyExistsException {
         }
 
     }
-}

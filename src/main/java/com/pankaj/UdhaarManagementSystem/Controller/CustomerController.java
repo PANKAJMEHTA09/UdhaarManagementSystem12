@@ -3,6 +3,9 @@ package com.pankaj.UdhaarManagementSystem.Controller;
 
 import com.pankaj.UdhaarManagementSystem.DTO.CustomerDTO;
 import com.pankaj.UdhaarManagementSystem.Entity.Customer;
+import com.pankaj.UdhaarManagementSystem.Entity.User;
+import com.pankaj.UdhaarManagementSystem.Exception.ResourceNotFoundException;
+import com.pankaj.UdhaarManagementSystem.Repo.CustomerRepo;
 import com.pankaj.UdhaarManagementSystem.Service.CustomerService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
@@ -32,7 +35,10 @@ public CustomerDTO AddCustomer(@Valid @RequestBody CustomerDTO customerDTO){
 }
 
 @GetMapping("/{id}")
-public Optional<CustomerDTO> getCustomerbyid(@PathVariable Long id){
+public CustomerDTO getCustomerbyid(@PathVariable Long id){
+
+
+
     return customerService.GetCustomerById(id);
 }
 

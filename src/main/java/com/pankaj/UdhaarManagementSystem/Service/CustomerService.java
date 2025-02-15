@@ -4,6 +4,8 @@ import com.pankaj.UdhaarManagementSystem.DTO.CustomerDTO;
 import com.pankaj.UdhaarManagementSystem.DTO.UserDTO;
 import com.pankaj.UdhaarManagementSystem.Entity.Customer;
 import com.pankaj.UdhaarManagementSystem.Entity.User;
+import com.pankaj.UdhaarManagementSystem.Exception.ResourceAlreadyExistsException;
+import com.pankaj.UdhaarManagementSystem.Exception.ResourceNotFoundException;
 import com.pankaj.UdhaarManagementSystem.Repo.CustomerRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,14 @@ public class CustomerService {
     private ModelMapper modelMapper;
 
     public CustomerDTO AddCustomer(CustomerDTO customerDTO){
+
+
+
+        if(!customerRepo.findByname(customerDTO.getName()).isEmpty()){
+            throw new ResourceAlreadyExistsException("user with this name already exist");
+        }
+
+
       Customer customer =modelMapper.map(customerDTO, Customer.class);
       customer = customerRepo.save(customer);
       return  modelMapper.map(customer, CustomerDTO.class);
@@ -30,18 +40,18 @@ public class CustomerService {
     }
 
      public void DeleteCustomer(Long id){
-        customerRepo.deleteById(id);
+
+         Customer customer=customerRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("user not found with this id "));
+
+
+         customerRepo.deleteById(id);
      }
 
-   public Optional<CustomerDTO>GetCustomerById(Long id){
-        Optional<Customer>customer=customerRepo.findById(id);
-        if(customer.isPresent()){
-            CustomerDTO customerDTO=modelMapper.map(customer.get(), CustomerDTO.class);
-            return  Optional.of(customerDTO);
-        }
-        else {
-            return Optional.empty();
-        }
+   public CustomerDTO GetCustomerById(Long id){
+        Customer customer=customerRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("user not found with this id "));
+
+       CustomerDTO CustomerDTO =modelMapper.map(customer,CustomerDTO.class);
+       return CustomerDTO;
 
    }
 
