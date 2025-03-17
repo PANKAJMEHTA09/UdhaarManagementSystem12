@@ -1,6 +1,7 @@
 package com.pankaj.UdhaarManagementSystem.DTO;
 
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -22,5 +23,9 @@ public class UserDTO {
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
     private String phone_no;
 
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email format")
+    private String email;
+    private boolean emailVerified;
 
 }

@@ -2,6 +2,8 @@ package com.pankaj.UdhaarManagementSystem.Entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;
@@ -22,9 +24,13 @@ public class User {
     private String name;
     private String phone_no;
     private String address;
+
+
     private String email;
 //    @OneToMany(mappedBy = "user")
 // private List<Customer>customers;
+
+    private  boolean verified_email = false;
 
 
 

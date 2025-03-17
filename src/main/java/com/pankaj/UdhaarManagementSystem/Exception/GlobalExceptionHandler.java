@@ -2,6 +2,8 @@ package com.pankaj.UdhaarManagementSystem.Exception;
 
 
 import ch.qos.logback.core.model.processor.ModelHandlerException;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,19 +16,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@Slf4j
 @RestControllerAdvice
 //tells Spring that this class will handle all errors globally.
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        log.error("Resource not found: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+
     }
 
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleResourceAlreadyExistsException(ResourceAlreadyExistsException ex) {
+        log.error("Resource already exists: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.CONFLICT.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
@@ -34,20 +39,28 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationErrors(MethodArgumentNotValidException ex) {
+        log.error("Validation failed: {}", ex.getMessage());
         Map<String, String> errors = new HashMap<>();
-        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errors.put(error.getField(), error.getDefaultMessage());
-        }
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.put(error.getField(), error.getDefaultMessage())
+        );
         return errors;
     }
 
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
-        ErrorResponse errorResponse = new ErrorResponse("An unexpected error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+        log.error("Unexpected error occurred: {}", ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(
+                "An unexpected error occurred: " + ex.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value()
+        );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
+
+    @Data
     public static class ErrorResponse {
         private String message;
         private int status;
