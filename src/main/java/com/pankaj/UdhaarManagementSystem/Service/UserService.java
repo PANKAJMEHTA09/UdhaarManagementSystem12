@@ -1,8 +1,6 @@
 package com.pankaj.UdhaarManagementSystem.Service;
 
-import com.pankaj.UdhaarManagementSystem.DTO.CustomerDTO;
 import com.pankaj.UdhaarManagementSystem.DTO.UserDTO;
-import com.pankaj.UdhaarManagementSystem.Entity.Customer;
 import com.pankaj.UdhaarManagementSystem.Entity.User;
 import com.pankaj.UdhaarManagementSystem.Exception.ResourceAlreadyExistsException;
 import com.pankaj.UdhaarManagementSystem.Exception.ResourceNotFoundException;
@@ -16,10 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 @Slf4j
 @Service
 public class UserService {
@@ -27,12 +21,10 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
     @Autowired
-     private ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
 
-
-
-    public UserDTO Adduser(UserDTO userDTO){
+    public UserDTO Adduser(UserDTO userDTO) {
         log.info("Attempting to add user with name: {}", userDTO.getName());
 
         if (!userRepo.findByname(userDTO.getName()).isEmpty()) {
@@ -68,11 +60,7 @@ public class UserService {
     }
 
 
-
-
-
-
-    public void DeleteUser(long id){
+    public void DeleteUser(long id) {
         log.info("Attempting to delete user with ID: {}", id);
 
         User user = userRepo.findById(id).orElseThrow(() -> {
@@ -111,20 +99,11 @@ public class UserService {
     }
 
 
-
-
 //
 //    public UserDTO getUserByUsername(String username) {
 //        User user = userRepo.findByUsernameIgnoreCase(username);
 //        return (user != null) ? modelMapper.map(user, UserDTO.class) : null;
 //    }
-
-
-
-
-
-
-
 
 
 }

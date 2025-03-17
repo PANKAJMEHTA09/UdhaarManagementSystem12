@@ -14,15 +14,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Payments {
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-private LocalDate date;
-private double amount;
-private double Paidamount;
-private double leftamount;
-private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private LocalDate date;
+    private double amount;
+    private double Paidamount;
+    private double leftamount;
+    private String description;
 
-   @ManyToOne
-   private Customer customer;
+    @ManyToOne
+    private Customer customer;
 }

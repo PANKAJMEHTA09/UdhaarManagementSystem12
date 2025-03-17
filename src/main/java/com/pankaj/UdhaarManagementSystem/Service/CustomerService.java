@@ -1,28 +1,22 @@
 package com.pankaj.UdhaarManagementSystem.Service;
 
 import com.pankaj.UdhaarManagementSystem.DTO.CustomerDTO;
-import com.pankaj.UdhaarManagementSystem.DTO.PaymentDTO;
-import com.pankaj.UdhaarManagementSystem.DTO.UserDTO;
 import com.pankaj.UdhaarManagementSystem.Entity.Customer;
-import com.pankaj.UdhaarManagementSystem.Entity.User;
 import com.pankaj.UdhaarManagementSystem.Exception.ResourceAlreadyExistsException;
 import com.pankaj.UdhaarManagementSystem.Exception.ResourceNotFoundException;
 import com.pankaj.UdhaarManagementSystem.Repo.CustomerRepo;
-import com.pankaj.UdhaarManagementSystem.Repo.PaymentRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.PageRequest;
-
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -35,7 +29,7 @@ public class CustomerService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public CustomerDTO AddCustomer(CustomerDTO customerDTO){
+    public CustomerDTO AddCustomer(CustomerDTO customerDTO) {
 
         log.info("Attempting to add a new customer with name: {}", customerDTO.getName());
 
@@ -45,6 +39,7 @@ public class CustomerService {
         }
 
         Customer customer = modelMapper.map(customerDTO, Customer.class);
+        customer.setTotalAmountGiven(0.0);
         customer = customerRepo.save(customer);
         log.info("Customer successfully added with ID: {}", customer.getId());
 
@@ -52,31 +47,31 @@ public class CustomerService {
 
     }
 
-     public void DeleteCustomer(Long id){
-         log.info("Attempting to delete customer with ID: {}", id);
+    public void DeleteCustomer(Long id) {
+        log.info("Attempting to delete customer with ID: {}", id);
 
-         Customer customer = customerRepo.findById(id)
-                 .orElseThrow(() -> {
-                     log.error("Customer not found with ID: {}", id);
-                     return new ResourceNotFoundException("Customer not found with this id");
-                 });
+        Customer customer = customerRepo.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Customer not found with ID: {}", id);
+                    return new ResourceNotFoundException("Customer not found with this id");
+                });
 
-         customerRepo.deleteById(id);
-         log.info("Customer with ID: {} successfully deleted", id);
-     }
+        customerRepo.deleteById(id);
+        log.info("Customer with ID: {} successfully deleted", id);
+    }
 
-   public CustomerDTO GetCustomerById(Long id){
-       log.info("Fetching customer details for ID: {}", id);
+    public CustomerDTO GetCustomerById(Long id) {
+        log.info("Fetching customer details for ID: {}", id);
 
-       Customer customer = customerRepo.findById(id)
-               .orElseThrow(() -> {
-                   log.error("Customer not found with ID: {}", id);
-                   return new ResourceNotFoundException("Customer not found with this id");
-               });
+        Customer customer = customerRepo.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Customer not found with ID: {}", id);
+                    return new ResourceNotFoundException("Customer not found with this id");
+                });
 
-       log.info("Customer details retrieved for ID: {}", id);
-       return modelMapper.map(customer, CustomerDTO.class);
-   }
+        log.info("Customer details retrieved for ID: {}", id);
+        return modelMapper.map(customer, CustomerDTO.class);
+    }
 
     public List<CustomerDTO> getCustomersByUserId(Long userId) {
         log.info("Fetching customers for User ID: {}", userId);
@@ -119,7 +114,7 @@ public class CustomerService {
     }
 
 
-    public Page<CustomerDTO> getCustomers( String name , int page, int size, String sortBy) {
+    public Page<CustomerDTO> getCustomers(String name, int page, int size, String sortBy) {
         log.info("Fetching customers - Page: {}, Size: {}, SortBy: {}", page, size, sortBy);
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
@@ -128,27 +123,22 @@ public class CustomerService {
         return customerPage.map(customer -> {
             log.info("Customer on page: {}", customer.getName());
             return modelMapper.map(customer, CustomerDTO.class);
-        });   }
+        });
+    }
 
 
+    public List<CustomerDTO> findallCustomer() {
+        log.info("Fetching all customers");
 
+        List<CustomerDTO> customerDTOList = new ArrayList<>();
+        for (Customer customer : customerRepo.findAll()) {
+            log.info("Mapping Customer ID: {} with name: {}", customer.getId(), customer.getName());
+            customerDTOList.add(modelMapper.map(customer, CustomerDTO.class));
+        }
 
-
-
-
-
-   public List<CustomerDTO>findallCustomer(){
-       log.info("Fetching all customers");
-
-       List<CustomerDTO> customerDTOList = new ArrayList<>();
-       for (Customer customer : customerRepo.findAll()) {
-           log.info("Mapping Customer ID: {} with name: {}", customer.getId(), customer.getName());
-           customerDTOList.add(modelMapper.map(customer, CustomerDTO.class));
-       }
-
-       log.info("Total customers found: {}", customerDTOList.size());
-       return customerDTOList;
-   }
+        log.info("Total customers found: {}", customerDTOList.size());
+        return customerDTOList;
+    }
 
 
     public CustomerDTO updateTotalAmountGiven(Long customerId, double amountGiven) {
@@ -184,10 +174,7 @@ public class CustomerService {
     }
 
 
-
 // scheduler methodd
-
-
 
 
     @Scheduled(cron = "0 * * * * ?")
@@ -202,28 +189,10 @@ public class CustomerService {
                         customer.getName(),
                         customer.getPhone_no(),
                         customer.getTotalAmountGiven());
+                        customer.getTotalAmountReturned();
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
