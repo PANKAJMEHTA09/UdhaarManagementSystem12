@@ -14,15 +14,29 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Payments {
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-private LocalDate date;
-private double amount;
-private double Paidamount;
-private double leftamount;
-private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private LocalDate paymentDate;
+    private double amount;
+    private double Paidamount;
+    private double remainingAmount;
+    private String description;
 
-   @ManyToOne
-   private Customer customer;
+
+    @ManyToOne
+    private Customer customer;
+
+
+    @PreUpdate
+    @PrePersist
+    public void validateAndCalculateRemaining() {
+        if (this.Paidamount > this.amount) {
+            throw new IllegalStateException("Paid amount cannot exceed total amount");
+        }
+        this.remainingAmount = this.amount - this.Paidamount;
+    }
+
+
+
 }

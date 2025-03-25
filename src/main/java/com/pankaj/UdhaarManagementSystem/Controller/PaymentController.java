@@ -48,29 +48,44 @@ public class PaymentController {
         return payments;
     }
 
-    @GetMapping
-    public Page<PaymentDTO> getPaymentsByCustomer(
-            @RequestParam(defaultValue = "") String customerName,
+    @PutMapping("/{id}")
+    public PaymentDTO updatePayment(@PathVariable Long id, @Valid @RequestBody PaymentDTO paymentDTO) {
+        log.info("Updating payment with ID: {}", id);
+        return paymentService.updatePayment(id, paymentDTO);
+    }
+
+
+    @GetMapping()
+    public Page<PaymentDTO> getAllPayments(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy) {
+            @RequestParam(defaultValue = "id") String sortBy)
+             {
 
-        log.info("Fetching payments for customer '{}', Page: {}, Size: {}, SortBy: {}", customerName, page, size, sortBy);
-        Page<PaymentDTO> payments = paymentService.getPaymentsByCustomer(customerName, page, size, sortBy);
-        log.info("Fetched {} payments for customer '{}'", payments.getTotalElements(), customerName);
+        log.info("Fetching payments for customer '{}', Page: {}, Size: {}, SortBy: {}", page, size, sortBy);
+        Page<PaymentDTO> payments = paymentService.getAllPayments(page, size, sortBy);
+//        log.info("Fetched {} payments for customer '{}'", payments.getTotalElements(), customerName);
         return payments;
     }
 
 
 
+// saari payments aaye saare customers ki with paginationnnnnn
 
 
-
-
+//
 //    @GetMapping
 //    public List<PaymentDTO>getallpayments(){
 //        return  paymentService.getAllPayments();
 //    }
+
+
+
+
+
+
+
+
 
     @GetMapping("/{id}")
     public Optional<PaymentDTO> getmappingbyid(@PathVariable Long id){

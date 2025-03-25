@@ -27,8 +27,13 @@ public class CustomerDTO {
     private String email;
     private boolean emailVerified;
 
-    private Double totalAmountGiven;
-    private Double totalAmountReturned;
+    private Double totalAmountofDebt;
+    private Double totalAmountReturnedDebt;
+
+    public Double getRemainingDebt() {
+        return totalAmountofDebt - totalAmountReturnedDebt;
+    }
+
 
 
 }
