@@ -19,7 +19,7 @@ public class Payments {
     private Long id;
     private LocalDate paymentDate;
     private double amount;
-    private double Paidamount;
+    private double PaidAmount;
     private double remainingAmount;
     private String description;
 
@@ -31,12 +31,11 @@ public class Payments {
     @PreUpdate
     @PrePersist
     public void validateAndCalculateRemaining() {
-        if (this.Paidamount > this.amount) {
+        if (this.PaidAmount > this.amount) {
             throw new IllegalStateException("Paid amount cannot exceed total amount");
         }
-        this.remainingAmount = this.amount - this.Paidamount;
+        this.remainingAmount = this.amount - this.PaidAmount;
     }
-
 
 
 }

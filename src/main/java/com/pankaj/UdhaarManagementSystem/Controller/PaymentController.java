@@ -2,36 +2,33 @@ package com.pankaj.UdhaarManagementSystem.Controller;
 
 
 import com.pankaj.UdhaarManagementSystem.DTO.PaymentDTO;
-import com.pankaj.UdhaarManagementSystem.Entity.Payments;
 import com.pankaj.UdhaarManagementSystem.Service.PaymentService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@SecurityRequirement(name = "BearerAuth")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/v1/Payment")
 @Slf4j
 public class PaymentController {
 
-
-
-
-
-    @Autowired
-    private PaymentService paymentService;
+    private final PaymentService paymentService;
 
     @PostMapping
-    public PaymentDTO addPayment( @Valid @RequestBody PaymentDTO paymentsDTO){
+    public PaymentDTO addPayment(@Valid @RequestBody PaymentDTO paymentsDTO) {
         log.info("Adding payment: {}", paymentsDTO);
         PaymentDTO savedPayment = paymentService.addPayment(paymentsDTO);
         log.info("Payment added successfully with ID: {}", savedPayment.getId());
         return savedPayment;
     }
+
     @GetMapping("/greater-than/{amount}")
     public List<PaymentDTO> getPaymentsGreaterThan(@PathVariable Double amount) {
         log.info("Fetching payments greater than amount: {}", amount);
@@ -59,15 +56,13 @@ public class PaymentController {
     public Page<PaymentDTO> getAllPayments(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy)
-             {
+            @RequestParam(defaultValue = "id") String sortBy) {
 
-        log.info("Fetching payments for customer '{}', Page: {}, Size: {}, SortBy: {}", page, size, sortBy);
+        log.info("Fetching payments for customers Page: {}, Size: {}, SortBy: {}", page, size, sortBy);
         Page<PaymentDTO> payments = paymentService.getAllPayments(page, size, sortBy);
 //        log.info("Fetched {} payments for customer '{}'", payments.getTotalElements(), customerName);
         return payments;
     }
-
 
 
 // saari payments aaye saare customers ki with paginationnnnnn
@@ -80,15 +75,8 @@ public class PaymentController {
 //    }
 
 
-
-
-
-
-
-
-
     @GetMapping("/{id}")
-    public Optional<PaymentDTO> getmappingbyid(@PathVariable Long id){
+    public Optional<PaymentDTO> getMappingById(@PathVariable Long id) {
         log.info("Fetching payment with ID: {}", id);
         Optional<PaymentDTO> payment = paymentService.getPaymentById(id);
         if (payment.isPresent()) {
@@ -101,14 +89,11 @@ public class PaymentController {
     }
 
     @DeleteMapping("/{id}")
-    public void DeleteMapping(@PathVariable Long id){
+    public void DeleteMapping(@PathVariable Long id) {
         log.info("Deleting payment with ID: {}", id);
         paymentService.deletePayment(id);
         log.info("Payment deleted with ID: {}", id);
     }
-
-
-
 
 
 }

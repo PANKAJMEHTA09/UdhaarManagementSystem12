@@ -2,6 +2,8 @@ package com.pankaj.UdhaarManagementSystem.Exception;
 
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,8 +59,11 @@ public class GlobalExceptionHandler {
     }
 
 
+    @Setter
+    @Getter
     @Data
     public static class ErrorResponse {
+        // Getters & Setters
         private String message;
         private int status;
 
@@ -67,22 +72,6 @@ public class GlobalExceptionHandler {
             this.status = status;
         }
 
-        // Getters & Setters
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
     }
 
 }

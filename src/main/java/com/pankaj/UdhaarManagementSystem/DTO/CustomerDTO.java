@@ -18,7 +18,7 @@ public class CustomerDTO {
     @NotBlank(message = "Name cannot be empty")
     private String name;
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
-    private  String phone_no;
+    private String phone_no;
     @NotNull(message = "User ID cannot be null")
     private Long userId;
 
@@ -27,13 +27,12 @@ public class CustomerDTO {
     private String email;
     private boolean emailVerified;
 
-    private Double totalAmountofDebt;
+    private Double totalAmountOfDebt;
     private Double totalAmountReturnedDebt;
 
     public Double getRemainingDebt() {
-        return totalAmountofDebt - totalAmountReturnedDebt;
+        return totalAmountOfDebt - totalAmountReturnedDebt;
     }
-
 
 
 }

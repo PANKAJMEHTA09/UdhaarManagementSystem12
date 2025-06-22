@@ -39,7 +39,7 @@ public class CustomerService {
         }
 
         Customer customer = modelMapper.map(customerDTO, Customer.class);
-        customer.setTotalAmountofDebt(0.0);
+        customer.setTotalAmountOfDebt(0.0);
         customer = customerRepo.save(customer);
         log.info("Customer successfully added with ID: {}", customer.getId());
 
@@ -127,7 +127,7 @@ public class CustomerService {
     }
 
 
-    public List<CustomerDTO> findallCustomer() {
+    public List<CustomerDTO> findAllCustomer() {
         log.info("Fetching all customers");
 
         List<CustomerDTO> customerDTOList = new ArrayList<>();
@@ -188,8 +188,8 @@ public class CustomerService {
                 log.info("Customer Name: {}, Phone No: {}, Total Amount Given: {}",
                         customer.getName(),
                         customer.getPhone_no(),
-                        customer.getTotalAmountofDebt());
-                        customer.getTotalAmountReturnedDebt();
+                        customer.getTotalAmountOfDebt());
+                customer.getTotalAmountReturnedDebt();
             }
         }
     }

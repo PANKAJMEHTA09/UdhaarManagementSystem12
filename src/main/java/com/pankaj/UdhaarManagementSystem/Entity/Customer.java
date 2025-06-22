@@ -28,10 +28,10 @@ public class Customer {
     private boolean verified_email = false;
 
 
-    private Double totalAmountofDebt = 0.0;
+    private Double totalAmountOfDebt = 0.0;
     private Double totalAmountReturnedDebt = 0.0;
 
     public Double getRemainingDebt() {
-        return this.totalAmountofDebt - this.totalAmountReturnedDebt;
+        return this.totalAmountOfDebt - this.totalAmountReturnedDebt;
     }
 }

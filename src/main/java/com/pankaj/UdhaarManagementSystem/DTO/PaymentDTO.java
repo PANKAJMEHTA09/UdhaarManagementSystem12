@@ -21,7 +21,7 @@ public class PaymentDTO {
     private double amount;
 
     @PositiveOrZero
-    private double Paidamount;
+    private double PaidAmount;
 
     private LocalDate paymentDate;
 

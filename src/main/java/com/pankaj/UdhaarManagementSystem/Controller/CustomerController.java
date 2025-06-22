@@ -3,20 +3,23 @@ package com.pankaj.UdhaarManagementSystem.Controller;
 
 import com.pankaj.UdhaarManagementSystem.DTO.CustomerDTO;
 import com.pankaj.UdhaarManagementSystem.Service.CustomerService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+@SecurityRequirement(name = "BearerAuth")
 
 @RestController
 @RequestMapping("api/v1/customer")
 @Slf4j
 public class CustomerController {
 
-    @Autowired
+    private final CustomerService customerService;
 
-    private CustomerService customerService;
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @PostMapping
     public CustomerDTO AddCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
@@ -46,11 +49,11 @@ public class CustomerController {
 //
 //@GetMapping
 //    public List<CustomerDTO> getCustomer(){
-//    return  customerService.findallCustomer();
+//    return  customerService.findAllCustomer();
 //}
 
     @GetMapping("/{id}")
-    public CustomerDTO getCustomerbyid(@PathVariable Long id) {
+    public CustomerDTO getCustomerById(@PathVariable Long id) {
         log.info("Fetching customer with ID: {}", id);
         CustomerDTO customerDTO = customerService.GetCustomerById(id);
         log.info("Fetched customer: {}", customerDTO);
@@ -69,7 +72,7 @@ public class CustomerController {
 
 
     @DeleteMapping("/{id}")
-    public void DeleteCustomerbyId(@PathVariable Long id) {
+    public void DeleteCustomerById(@PathVariable Long id) {
         log.info("Request received to delete customer with ID: {}", id);
         customerService.DeleteCustomer(id);
         log.info("Customer deleted successfully with ID: {}", id);

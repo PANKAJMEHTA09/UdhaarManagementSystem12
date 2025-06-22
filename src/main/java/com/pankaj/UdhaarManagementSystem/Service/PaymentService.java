@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -63,10 +62,6 @@ public class PaymentService {
 //    }
 
 
-
-
-
-
 //        public Page<PaymentDTO> getPaymentsByCustomer(String customerName, int page, int size, String sortBy) {
 //        log.info("Fetching payments for customer name '{}' with pagination - Page: {}, Size: {}, SortBy: {}", customerName, page, size, sortBy);
 //
@@ -81,60 +76,32 @@ public class PaymentService {
 // for my updating payment
 
 
-public PaymentDTO updatePayment(Long id ,PaymentDTO paymentDTO){
-   log.info("Updating payment with id {}",id);
+    public PaymentDTO updatePayment(Long id, PaymentDTO paymentDTO) {
+        log.info("Updating payment with id {}", id);
 
 //   Fetch exixts payment
-   Payments existingPayment = paymentRepo.findById(id).orElseThrow(()->new ResourceNotFoundException("Payment not found"));
+        Payments existingPayment = paymentRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Payment not found"));
 
 //   fetch associated customer
-    Customer customer = customerRepo.findById(existingPayment.getCustomer().getId()).orElseThrow(()->new ResourceNotFoundException("customer not found"));
+        Customer customer = customerRepo.findById(existingPayment.getCustomer().getId()).orElseThrow(() -> new ResourceNotFoundException("customer not found"));
 
 //    revert old payments amount from customer's record
 
-    customer.setTotalAmountofDebt(customer.getTotalAmountofDebt()-existingPayment.getAmount());
-    customer.setTotalAmountReturnedDebt(customer.getTotalAmountReturnedDebt()- existingPayment.getPaidamount());
+        customer.setTotalAmountOfDebt(customer.getTotalAmountOfDebt() - existingPayment.getAmount());
+        customer.setTotalAmountReturnedDebt(customer.getTotalAmountReturnedDebt() - existingPayment.getPaidAmount());
 
 //update payment details with new values
-    existingPayment.setAmount(paymentDTO.getAmount());
-    existingPayment.setPaidamount(paymentDTO.getPaidamount());
-    existingPayment.setPaymentDate(paymentDTO.getPaymentDate());
+        existingPayment.setAmount(paymentDTO.getAmount());
+        existingPayment.setPaidAmount(paymentDTO.getPaidAmount());
+        existingPayment.setPaymentDate(paymentDTO.getPaymentDate());
 
-    customerRepo.save(customer);
-    Payments updatedPayment  = paymentRepo.save(existingPayment);
+        customerRepo.save(customer);
+        Payments updatedPayment = paymentRepo.save(existingPayment);
 
-    return modelMapper.map(updatedPayment, PaymentDTO.class);
-
-
+        return modelMapper.map(updatedPayment, PaymentDTO.class);
 
 
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
     public List<PaymentDTO> getPaymentsGreaterThan(Double amount) {
@@ -204,8 +171,8 @@ public PaymentDTO updatePayment(Long id ,PaymentDTO paymentDTO){
                 () -> new ResourceNotFoundException("Customer not found"));
 
         Payments payment = modelMapper.map(paymentDTO, Payments.class);
-        customer.setTotalAmountofDebt(customer.getTotalAmountofDebt() + paymentDTO.getAmount());
-        customer.setTotalAmountReturnedDebt(customer.getTotalAmountReturnedDebt() + paymentDTO.getPaidamount());
+        customer.setTotalAmountOfDebt(customer.getTotalAmountOfDebt() + paymentDTO.getAmount());
+        customer.setTotalAmountReturnedDebt(customer.getTotalAmountReturnedDebt() + paymentDTO.getPaidAmount());
         customerRepo.save(customer);
         Payments savedPayment = paymentRepo.save(payment);
 

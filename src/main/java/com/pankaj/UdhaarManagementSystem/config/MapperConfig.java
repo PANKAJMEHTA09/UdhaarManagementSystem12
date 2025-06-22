@@ -11,9 +11,7 @@ public class MapperConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-
-        log.info("Initializing ModelMapper bean...");
-
+        log.info("Initializing ModelMapper bea...");
         return new ModelMapper();
     }
 

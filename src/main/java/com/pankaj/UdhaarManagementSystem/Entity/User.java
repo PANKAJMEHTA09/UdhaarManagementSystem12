@@ -1,12 +1,9 @@
 package com.pankaj.UdhaarManagementSystem.Entity;
 
 
+import com.pankaj.UdhaarManagementSystem.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-
-import java.util.List;
 
 @Builder
 @Getter
@@ -17,8 +14,8 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq")
-    @SequenceGenerator(name = "seq",sequenceName = "ex_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @SequenceGenerator(name = "seq", sequenceName = "ex_seq", allocationSize = 1)
     private Long id;
 
     private String name;
@@ -27,11 +24,11 @@ public class User {
 
 
     private String email;
-//    @OneToMany(mappedBy = "user")
-// private List<Customer>customers;
+    private String password;
+    private boolean isVerified;
 
-    private  boolean verified_email = false;
-
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 
 }
